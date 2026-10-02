@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusMind 360</title>
+
+
+    <style>
+
+        * {
+
+            box-sizing: border-box;
+
+            font-family: Arial, sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+
+        body {
+
+            background: linear-gradient(
+                135deg,
+                #111827,
+                #312e81,
+                #0e7490
+            );
+
+            min-height: 100vh;
+
+            color: white;
+
+            transition: background 0.5s ease;
+
+        }
+
+
+        body.dashboard-mode {
+
+            background: linear-gradient(
+                135deg,
+                #172554,
+                #4c1d95,
+                #155e75
+            );
+
+        }
+
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 20px;
+
+        }
+
+
+        .card {
+
+            background: rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(18px);
+
+            padding: 25px;
+
+            border: 1px solid rgba(255, 255, 255, 0.18);
+
+            border-radius: 22px;
+
+            margin: 20px 0;
+
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+
+        }
+
+
+        #dashboard > .card {
+
+            background: linear-gradient(
+                135deg,
+                rgba(30, 64, 175, 0.75),
+                rgba(126, 34, 206, 0.65)
+            );
+
+            border: 1px solid rgba(255, 255, 255, 0.3);
+
+        }
+
+
+        h1,
+        h2 {
+
+            text-align: center;
+
+            color: #dbeafe;
+
+            margin-bottom: 20px;
+
+            letter-spacing: 0.5px;
+
+        }
+
+
+        h3 {
+
+            margin: 15px 0;
+
+            color: #e0f2fe;
+
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin: 8px 0;
+
+            border-radius: 10px;
+
+            border: 1px solid rgba(255, 255, 255, 0.25);
+
+            outline: none;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            color: #111827;
+
+        }
+
+
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
+        }
+
+
+        button {
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            margin: 6px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease;
+
+        }
+
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+        }
+
+
+        .hidden {
+
+            display: none !important;
+
+        }
+
+
+        .nav {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            margin: 15px;
+
+        }
+
+
+        .item,
+        .complaint-card,
+        .announcement-card {
+
+            background: rgba(255, 255, 255, 0.12);
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            margin: 12px 0;
+
+            border-left: 4px solid #67e8f9;
+
+        }
+
+
+        .logout {
+
+            background: linear-gradient(
+                135deg,
+                #dc2626,
+                #be123c
+            );
+
+        }
+
+
+        .success {
+
+            color: #86efac;
+
+            margin: 10px;
+
+        }
+
+
+        .error {
+
+            color: #fca5a5;
+
+            margin: 10px;
+
+        }
+
+
+        .tablebox {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: white;
+
+            color: #111827;
+
+            min-width: 900px;
+
+        }
+
+
+        th {
+
+            background: #4338ca;
+
+            color: white;
+
+            padding: 10px;
+
+        }
+
+
+        td {
+
+            border: 1px solid #cbd5e1;
+
+            padding: 6px;
+
+            text-align: center;
+
+        }
+
+
+        td input {
+
+            padding: 7px;
+
+            border: 1px solid #aaa;
+
+            min-width: 100px;
+
+        }
+
+
+        .badge {
+
+            background: #4f46e5;
+
+            padding: 5px 10px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-top: 10px;
+
+            font-weight: bold;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+
+        <!-- LOGIN PAGE -->
+
+        <section id="loginPage" class="card">
+
+            <h1>CampusMind 360</h1>
+
+            <h2>Login Portal</h2>
+
+
+            <select id="role" onchange="roleChange()">
+
+                <option value="student">
+                    Student Login
+                </option>
+
+                <option value="teacher">
+                    Teacher Login
+                </option>
+
+                <option value="principal">
+                    Principal Login
+                </option>
+
+            </select>
+
+
+            <input
+                id="name"
+                placeholder="Enter Name"
+            >
+
+
+            <div id="academicFields">
+
+                <input
+                    id="branch"
+                    placeholder="Enter Branch (CSE, AIDS, ECE...)"
+                >
+
+
+                <!-- TEACHER SUBJECT -->
+
+                <input
+                    id="subject"
+                    class="hidden"
+                    placeholder="Enter Teaching Subject"
+                >
+
+
+                <select id="year">
+
+                    <option>First Year</option>
+
+                    <option>Second Year</option>
+
+                    <option>Third Year</option>
+
+                    <option>Fourth Year</option>
+
+                </select>
+
+            </div>
+
+
+            <button onclick="login()">
+
+                Login
+
+            </button>
+
+
+            <p id="loginMessage"></p>
+
+        </section>
+
+
+
+        <!-- DASHBOARD -->
+
+        <section id="dashboard" class="hidden">
+
+
+            <div class="card">
+
+                <h1 id="welcome"></h1>
+
+
+                <div class="nav">
+
+
+                    <button onclick="showSection('home')">
+
+                        Home
+
+                    </button>
+
+
+                    <button
+                        id="timetableBtn"
+                        onclick="showSection('timetable')"
+                    >
+
+                        Timetable
+
+                    </button>
+
+
+                    <button
+                        id="complaintBtn"
+                        onclick="showSection('complaint')"
+                    >
+
+                        Complaint
+
+                    </button>
+
+
+                    <button onclick="showSection('announcement')">
+
+                        Announcements
+
+                    </button>
+
+
+                    <button
+                        id="teacherAnnouncementBtn"
+                        class="hidden"
+                        onclick="showSection('teacherAnnouncement')"
+                    >
+
+                        Student Announcement
+
+                    </button>
+
+
+                    <button
+                        id="principalBtn"
+                        class="hidden"
+                        onclick="showSection('principal')"
+                    >
+
+                        Principal Panel
+
+                    </button>
+
+
+                    <button
+                        class="logout"
+                        onclick="logout()"
+                    >
+
+                        Logout
+
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HOME -->
+
+            <section
+                id="home"
+                class="card pageSection"
+            >
+
+                <h2>Dashboard</h2>
+
+                <div id="homeContent"></div>
+
+            </section>
+
+
+
+            <!-- TEACHER TIMETABLE -->
+
+            <section
+                id="timetable"
+                class="card pageSection hidden"
+            >
+
+                <h2>Teacher Timetable</h2>
+
+
+                <div class="tablebox">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Day</th>
+
+
+                                <script>
+
+                                    for (let i = 1; i <= 8; i++) {
+
+                                        document.write(
+                                            `<th>Period ${i}</th>`
+                                        );
+
+                                    }
+
+                                </script>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="timetableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+
+                <button onclick="saveTimetable()">
+
+                    Save / Update Timetable
+
+                </button>
+
+
+                <p id="savedMessage"></p>
+
+            </section>
+
+
+
+            <!-- STUDENT COMPLAINT -->
+
+            <section
+                id="complaint"
+                class="card pageSection hidden"
+            >
+
+                <h2>Student Complaint</h2>
+
+
+                <input
+                    id="location"
+                    placeholder="Problem Location"
+                >
+
+
+                <input
+                    id="problem"
+                    placeholder="Problem Type"
+                >
+
+
+                <textarea
+                    id="details"
+                    placeholder="Explain Your Problem"
+                ></textarea>
+
+
+                <label>
+
+                    Send Complaint To:
+
+                </label>
+
+
+                <select id="complaintTeacher">
+
+                    <option value="">
+
+                        Select Teacher / Principal
+
+                    </option>
+
+                </select>
+
+
+                <button onclick="submitComplaint()">
+
+                    Send Complaint
+
+                </button>
+
+
+                <p id="complaintMessage"></p>
+
+            </section>
+
+
+
+            <!-- ANNOUNCEMENTS -->
+
+            <section
+                id="announcement"
+                class="card pageSection hidden"
+            >
+
+                <h2>Announcements</h2>
+
+
+                <div id="announcementList"></div>
+
+            </section>
+
+
+
+            <!-- TEACHER ANNOUNCEMENT -->
+
+            <section
+                id="teacherAnnouncement"
+                class="card pageSection hidden"
+            >
+
+                <h2>Teacher Announcement</h2>
+
+
+                <input
+                    id="teacherAnnouncementTitle"
+                    placeholder="Announcement Title"
+                >
+
+
+                <textarea
+                    id="teacherAnnouncementText"
+                    placeholder="Announcement Message"
+                ></textarea>
+
+
+                <p>
+
+                    Announcement To:
+
+                    <b id="teacherAnnouncementAudience"></b>
+
+                </p>
+
+
+                <button onclick="createTeacherAnnouncement()">
+
+                    Send Announcement
+
+                </button>
+
+
+                <p id="teacherAnnouncementMessage"></p>
+
+            </section>
+
+
+
+            <!-- PRINCIPAL PANEL -->
+
+            <section
+                id="principal"
+                class="card pageSection hidden"
+            >
+
+                <h2>Principal Panel</h2>
+
+
+                <h3>Create Public Announcement</h3>
+
+
+                <input
+                    id="announcementTitle"
+                    placeholder="Announcement Title"
+                >
+
+
+                <textarea
+                    id="announcementText"
+                    placeholder="Announcement Message"
+                ></textarea>
+
+
+                <label>
+
+                    Select Audience:
+
+                </label>
+
+
+                <select id="announcementAudience">
+
+
+                    <option>First Year Students</option>
+
+                    <option>Second Year Students</option>
+
+                    <option>Third Year Students</option>
+
+                    <option>Fourth Year Students</option>
+
+
+                    <option>First Year Teachers</option>
+
+                    <option>Second Year Teachers</option>
+
+                    <option>Third Year Teachers</option>
+
+                    <option>Fourth Year Teachers</option>
+
+
+                    <option>All Year Students</option>
+
+                    <option>All Year Teachers</option>
+
+
+                </select>
+
+
+                <button onclick="createAnnouncement()">
+
+                    Publish Announcement
+
+                </button>
+
+
+                <p id="announcementMessage"></p>
+
+
+                <h3>All Complaints</h3>
+
+
+                <div id="allComplaints"></div>
+
+            </section>
+
+        </section>
+
+    </div>
+
+
+
+    <script>
+
+
+        // CURRENT USER DETAILS
+
+        let currentUser = "";
+
+        let currentRole = "";
+
+        let currentBranch = "";
+
+        let currentSubject = "";
+
+        let currentYear = "";
+
+
+
+        // LOAD DATA FROM LOCAL STORAGE
+
+        let timetable = JSON.parse(
+
+            localStorage.getItem("timetable") || "{}"
+
+        );
+
+
+        let complaints = JSON.parse(
+
+            localStorage.getItem("complaints") || "[]"
+
+        );
+
+
+        let announcements = JSON.parse(
+
+            localStorage.getItem("announcements") || "[]"
+
+        );
+
+
+        let teachers = JSON.parse(
+
+            localStorage.getItem("teachers") || "[]"
+
+        );
+
+
+
+        // DAYS FOR TIMETABLE
+
+        const days = [
+
+            "Monday",
+
+            "Tuesday",
+
+            "Wednesday",
+
+            "Thursday",
+
+            "Friday",
+
+            "Saturday"
+
+        ];
+
+
+
+        // SAFE HTML FUNCTION
+
+        function escapeHTML(value) {
+
+            return String(value || "")
+
+                .replace(/&/g, "&amp;")
+
+                .replace(/</g, "&lt;")
+
+                .replace(/>/g, "&gt;")
+
+                .replace(/"/g, "&quot;")
+
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+
+        // ROLE CHANGE FUNCTION
+
+        function roleChange() {
+
+
+            let role = document.getElementById("role").value;
+
+
+            document.getElementById("academicFields").style.display =
+
+                role === "principal" ? "none" : "block";
+
+
+            document.getElementById("subject").classList.toggle(
+
+                "hidden",
+
+                role !== "teacher"
+
+            );
+
+        }
+
+
+
+        // LOGIN FUNCTION
+
+        function login() {
+
+
+            let role = document.getElementById("role").value;
+
+
+            let name = document.getElementById("name").value.trim();
+
+
+            let branch = document.getElementById("branch").value.trim();
+
+
+            let subject = document.getElementById("subject").value.trim();
+
+
+            let year = document.getElementById("year").value;
+
+
+            let message = document.getElementById("loginMessage");
+
+
+
+            // CHECK NAME
+
+            if (!name) {
+
+                message.className = "error";
+
+                message.textContent = "Please enter your name.";
+
+                return;
+
+            }
+
+
+
+            // CHECK BRANCH AND YEAR
+
+            if (role !== "principal" && (!branch || !year)) {
+
+                message.className = "error";
+
+                message.textContent = "Please enter branch and year.";
+
+                return;
+
+            }
+
+
+
+            // CHECK TEACHER SUBJECT
+
+            if (role === "teacher" && !subject) {
+
+                message.className = "error";
+
+                message.textContent =
+
+                    "Please enter your teaching subject.";
+
+                return;
+
+            }
+
+
+
+            // SAVE CURRENT USER DETAILS
+
+            currentUser = name;
+
+            currentRole = role;
+
+            currentBranch = branch;
+
+            currentSubject = subject;
+
+            currentYear = year;
+
+
+
+            // CHANGE DASHBOARD BACKGROUND
+
+            document.body.classList.add("dashboard-mode");
+
+
+
+            // SAVE TEACHER DETAILS
+
+            if (role === "teacher") {
+
+
+                let exists = teachers.some(t =>
+
+                    t.name.toLowerCase() === name.toLowerCase() &&
+
+                    t.branch.toLowerCase() === branch.toLowerCase() &&
+
+                    t.subject.toLowerCase() === subject.toLowerCase() &&
+
+                    t.year === year
+
+                );
+
+
+
+                if (!exists) {
+
+
+                    teachers.push({
+
+                        name: name,
+
+                        branch: branch,
+
+                        subject: subject,
+
+                        year: year
+
+                    });
+
+
+
+                    localStorage.setItem(
+
+                        "teachers",
+
+                        JSON.stringify(teachers)
+
+                    );
+
+                }
+
+            }
+
+
+
+            // OPEN DASHBOARD
+
+            document.getElementById("loginPage")
+
+                .classList.add("hidden");
+
+
+            document.getElementById("dashboard")
+
+                .classList.remove("hidden");
+
+
+
+            document.getElementById("welcome").textContent =
+
+                "Welcome, " + currentUser;
+
+
+
+            // SHOW OR HIDE BUTTONS
+
+            document.getElementById("timetableBtn")
+
+                .classList.toggle("hidden", role !== "teacher");
+
+
+            document.getElementById("complaintBtn")
+
+                .classList.toggle("hidden", role !== "student");
+
+
+            document.getElementById("teacherAnnouncementBtn")
+
+                .classList.toggle("hidden", role !== "teacher");
+
+
+            document.getElementById("principalBtn")
+
+                .classList.toggle("hidden", role !== "principal");
+
+
+
+            // TEACHER ANNOUNCEMENT AUDIENCE
+
+            if (role === "teacher") {
+
+
+                document.getElementById(
+
+                    "teacherAnnouncementAudience"
+
+                ).textContent = currentYear + " Students";
+
+            }
+
+
+
+            // LOAD ALL DATA
+
+            loadAll();
+
+
+
+            // OPEN DEFAULT SECTION
+
+            showSection(
+
+                role === "principal" ? "principal" : "home"
+
+            );
+
+        }
+
+
+
+        // SHOW SECTION FUNCTION
+
+        function showSection(sectionName) {
+
+
+            document.querySelectorAll(".pageSection")
+
+                .forEach(section => {
+
+                    section.classList.add("hidden");
+
+                });
+
+
+
+            document.getElementById(sectionName)
+
+                .classList.remove("hidden");
+
+
+
+            if (sectionName === "complaint") {
+
+                loadComplaintTeachers();
+
+            }
+
+
+
+            if (sectionName === "timetable") {
+
+                loadTimetable();
+
+            }
+
+
+
+            if (sectionName === "announcement") {
+
+                loadAnnouncements();
+
+            }
+
+
+
+            if (sectionName === "principal") {
+
+                loadPrincipal();
+
+            }
+
+        }
+
+
+
+        // LOAD ALL FUNCTIONS
+
+        function loadAll() {
+
+
+            loadHome();
+
+            loadAnnouncements();
+
+            loadPrincipal();
+
+        }
+
+
+
+        // HOME DASHBOARD
+
+        function loadHome() {
+
+
+            let home = document.getElementById("homeContent");
+
+
+
+            if (currentRole === "student") {
+
+
+                home.innerHTML = `
+
+                    <div class="item">
+
+                        <h3>Student Dashboard</h3>
+
+                        <p>Name: ${escapeHTML(currentUser)}</p>
+
+                        <p>Branch: ${escapeHTML(currentBranch)}</p>
+
+                        <p>Year: ${escapeHTML(currentYear)}</p>
+
+                        <p>
+                            You can send complaints to all your
+                            year teachers or Principal.
+                        </p>
+
+                    </div>
+
+                `;
+
+
+            } else if (currentRole === "teacher") {
+
+
+                home.innerHTML = `
+
+                    <div class="item">
+
+                        <h3>Teacher Dashboard</h3>
+
+                        <p>Name: ${escapeHTML(currentUser)}</p>
+
+                        <p>Branch: ${escapeHTML(currentBranch)}</p>
+
+                        <p>Subject: ${escapeHTML(currentSubject)}</p>
+
+                        <p>Year: ${escapeHTML(currentYear)}</p>
+
+                        <p>
+                            You can update your class timetable.
+                        </p>
+
+                    </div>
+
+                `;
+
+
+            } else {
+
+
+                home.innerHTML = `
+
+                    <div class="item">
+
+                        <h3>Principal Dashboard</h3>
+
+                        <p>
+                            Principal Name:
+                            ${escapeHTML(currentUser)}
+                        </p>
+
+                        <p>
+                            You can publish announcements
+                            and manage complaints.
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+
+        // COMPLAINT RECIPIENT LIST
+
+        function loadComplaintTeachers() {
+
+
+            if (currentRole !== "student") {
+
+                return;
+
+            }
+
+
+
+            let select = document.getElementById(
+
+                "complaintTeacher"
+
+            );
+
+
+
+            select.innerHTML = `
+
+                <option value="">
+
+                    Select Teacher / Principal
+
+                </option>
+
+            `;
+
+
+
+            // GET TEACHERS FROM STUDENT YEAR
+
+            let yearTeachers = teachers.filter(t =>
+
+                t.year === currentYear
+
+            );
+
+
+
+            yearTeachers.forEach(teacher => {
+
+
+                let option = document.createElement("option");
+
+
+
+                option.value =
+
+                    `${teacher.name}|${teacher.branch}|${teacher.subject}|${teacher.year}`;
+
+
+
+                option.textContent =
+
+                    `${teacher.name} - ${teacher.branch} - ${teacher.subject}`;
+
+
+
+                select.appendChild(option);
+
+            });
+
+
+
+            // ALL YEAR TEACHERS OPTION
+
+            let allTeachers = document.createElement("option");
+
+
+            allTeachers.value = "ALL_YEAR_TEACHERS";
+
+
+            allTeachers.textContent =
+
+                "All " + currentYear + " Teachers";
+
+
+            select.appendChild(allTeachers);
+
+
+
+            // PRINCIPAL LAST
+
+            let principal = document.createElement("option");
+
+
+            principal.value = "Principal";
+
+
+            principal.textContent = "Principal";
+
+
+            select.appendChild(principal);
+
+        }
+
+
+
+        // SUBMIT COMPLAINT
+
+        function submitComplaint() {
+
+
+            let location = document.getElementById("location")
+
+                .value.trim();
+
+
+
+            let problem = document.getElementById("problem")
+
+                .value.trim();
+
+
+
+            let details = document.getElementById("details")
+
+                .value.trim();
+
+
+
+            let recipient = document.getElementById(
+
+                "complaintTeacher"
+
+            ).value;
+
+
+
+            let message = document.getElementById(
+
+                "complaintMessage"
+
+            );
+
+
+
+            // CHECK ALL FIELDS
+
+            if (!location || !problem || !details || !recipient) {
+
+
+                message.className = "error";
+
+                message.textContent = "Please fill all fields.";
+
+                return;
+
+            }
+
+
+
+            let recipientName = recipient;
+
+
+
+            if (recipient.includes("|")) {
+
+
+                recipientName = recipient.split("|")[0];
+
+            }
+
+
+
+            if (recipient === "ALL_YEAR_TEACHERS") {
+
+
+                recipientName = "All " + currentYear + " Teachers";
+
+            }
+
+
+
+            // SAVE COMPLAINT
+
+            complaints.push({
+
+
+                id: Date.now(),
+
+
+                student: currentUser,
+
+
+                branch: currentBranch,
+
+
+                year: currentYear,
+
+
+                recipient: recipientName,
+
+
+                location: location,
+
+
+                problem: problem,
+
+
+                details: details,
+
+
+                status: "Pending",
+
+
+                date: new Date().toLocaleString()
+
+            });
+
+
+
+            // SAVE TO LOCAL STORAGE
+
+            localStorage.setItem(
+
+                "complaints",
+
+                JSON.stringify(complaints)
+
+            );
+
+
+
+            message.className = "success";
+
+
+            message.textContent =
+
+                "Complaint sent successfully.";
+
+
+
+            // CLEAR FORM
+
+            document.getElementById("location").value = "";
+
+
+            document.getElementById("problem").value = "";
+
+
+            document.getElementById("details").value = "";
+
+        }
+
+
+
+        // PRINCIPAL ANNOUNCEMENT
+
+        function createAnnouncement() {
+
+
+            let title = document.getElementById(
+
+                "announcementTitle"
+
+            ).value.trim();
+
+
+
+            let text = document.getElementById(
+
+                "announcementText"
+
+            ).value.trim();
+
+
+
+            let audience = document.getElementById(
+
+                "announcementAudience"
+
+            ).value;
+
+
+
+            let message = document.getElementById(
+
+                "announcementMessage"
+
+            );
+
+
+
+            if (!title || !text) {
+
+
+                message.className = "error";
+
+
+                message.textContent =
+
+                    "Enter title and message.";
+
+
+                return;
+
+            }
+
+
+
+            announcements.push({
+
+
+                id: Date.now(),
+
+
+                title: title,
+
+
+                text: text,
+
+
+                audience: audience,
+
+
+                createdBy: currentUser,
+
+
+                date: new Date().toLocaleString()
+
+            });
+
+
+
+            localStorage.setItem(
+
+                "announcements",
+
+                JSON.stringify(announcements)
+
+            );
+
+
+
+            message.className = "success";
+
+
+            message.textContent =
+
+                "Announcement published successfully.";
+
+
+
+            document.getElementById(
+
+                "announcementTitle"
+
+            ).value = "";
+
+
+
+            document.getElementById(
+
+                "announcementText"
+
+            ).value = "";
+
+
+
+            loadAnnouncements();
+
+        }
+
+
+
+        // TEACHER ANNOUNCEMENT
+
+        function createTeacherAnnouncement() {
+
+
+            if (currentRole !== "teacher") {
+
+                return;
+
+            }
+
+
+
+            let title = document.getElementById(
+
+                "teacherAnnouncementTitle"
+
+            ).value.trim();
+
+
+
+            let text = document.getElementById(
+
+                "teacherAnnouncementText"
+
+            ).value.trim();
+
+
+
+            let message = document.getElementById(
+
+                "teacherAnnouncementMessage"
+
+            );
+
+
+
+            if (!title || !text) {
+
+
+                message.className = "error";
+
+
+                message.textContent =
+
+                    "Enter title and message.";
+
+
+                return;
+
+            }
+
+
+
+            announcements.push({
+
+
+                id: Date.now(),
+
+
+                title: title,
+
+
+                text: text,
+
+
+                audience: currentYear + " Students",
+
+
+                createdBy: currentUser,
+
+
+                teacherBranch: currentBranch,
+
+
+                teacherSubject: currentSubject,
+
+
+                date: new Date().toLocaleString()
+
+            });
+
+
+
+            localStorage.setItem(
+
+                "announcements",
+
+                JSON.stringify(announcements)
+
+            );
+
+
+
+            message.className = "success";
+
+
+            message.textContent =
+
+                "Announcement sent to your year students.";
+
+
+
+            document.getElementById(
+
+                "teacherAnnouncementTitle"
+
+            ).value = "";
+
+
+
+            document.getElementById(
+
+                "teacherAnnouncementText"
+
+            ).value = "";
+
+
+
+            loadAnnouncements();
+
+        }
+
+
+
+        // ANNOUNCEMENT FILTER
+
+        function loadAnnouncements() {
+
+
+            let list = document.getElementById(
+
+                "announcementList"
+
+            );
+
+
+
+            if (!list) {
+
+                return;
+
+            }
+
+
+
+            let filtered = [];
+
+
+
+            if (currentRole === "principal") {
+
+
+                filtered = announcements;
+
+
+            } else if (currentRole === "student") {
+
+
+                filtered = announcements.filter(a =>
+
+                    a.audience === currentYear + " Students" ||
+
+                    a.audience === "All Year Students"
+
+                );
+
+
+            } else if (currentRole === "teacher") {
+
+
+                filtered = announcements.filter(a =>
+
+                    a.audience === currentYear + " Teachers" ||
+
+                    a.audience === "All Year Teachers"
+
+                );
+
+            }
+
+
+
+            if (filtered.length === 0) {
+
+
+                list.innerHTML = `
+
+                    <div class="item">
+
+                        No announcements available.
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+
+            list.innerHTML = filtered.slice().reverse().map(a => `
+
+
+                <div class="announcement-card">
+
+
+                    <h3>
+
+                        ${escapeHTML(a.title)}
+
+                    </h3>
+
+
+                    <p>
+
+                        ${escapeHTML(a.text)}
+
+                    </p>
+
+
+                    <p>
+
+                        <span class="badge">
+
+                            ${escapeHTML(a.audience)}
+
+                        </span>
+
+                    </p>
+
+
+                    <small>
+
+                        Published by:
+                        ${escapeHTML(a.createdBy)}
+
+                        <br>
+
+                        Date:
+                        ${escapeHTML(a.date)}
+
+                    </small>
+
+
+                </div>
+
+
+            `).join("");
+
+        }
+
+
+
+        // LOAD TIMETABLE
+
+        // CLASS ONLY - SUBJECT REMOVED
+
+        function loadTimetable() {
+
+
+            if (currentRole !== "teacher") {
+
+                return;
+
+            }
+
+
+
+            let body = document.getElementById(
+
+                "timetableBody"
+
+            );
+
+
+
+            body.innerHTML = "";
+
+
+
+            days.forEach(day => {
+
+
+                let row = `<tr><th>${day}</th>`;
+
+
+                for (let period = 1; period <= 8; period++) {
+
+
+                    let saved =
+
+                        timetable[currentUser] &&
+
+                        timetable[currentUser][day] &&
+
+                        timetable[currentUser][day][period];
+
+
+
+                    row += `
+
+                        <td>
+
+
+                            <input
+
+                                placeholder="Enter Class"
+
+                                data-day="${day}"
+
+                                data-period="${period}"
+
+                                value="${escapeHTML(
+
+                                    saved ? saved.className : ""
+
+                                )}"
+
+                            >
+
+
+                        </td>
+
+                    `;
+
+                }
+
+
+
+                row += "</tr>";
+
+
+                body.innerHTML += row;
+
+            });
+
+        }
+
+
+
+        // SAVE TIMETABLE
+
+        function saveTimetable() {
+
+
+            if (currentRole !== "teacher") {
+
+                return;
+
+            }
+
+
+
+            if (!timetable[currentUser]) {
+
+
+                timetable[currentUser] = {};
+
+            }
+
+
+
+            days.forEach(day => {
+
+
+                timetable[currentUser][day] = {};
+
+
+
+                for (let period = 1; period <= 8; period++) {
+
+
+                    let classInput = document.querySelector(
+
+                        `input[data-day="${day}"][data-period="${period}"]`
+
+                    );
+
+
+
+                    timetable[currentUser][day][period] = {
+
+
+                        className: classInput.value
+
+                    };
+
+                }
+
+            });
+
+
+
+            localStorage.setItem(
+
+                "timetable",
+
+                JSON.stringify(timetable)
+
+            );
+
+
+
+            let message = document.getElementById(
+
+                "savedMessage"
+
+            );
+
+
+
+            message.className = "success";
+
+
+            message.textContent =
+
+                "Timetable saved / updated successfully.";
+
+        }
+
+
+
+        // PRINCIPAL PANEL
+
+        function loadPrincipal() {
+
+
+            if (currentRole !== "principal") {
+
+                return;
+
+            }
+
+
+
+            let box = document.getElementById(
+
+                "allComplaints"
+
+            );
+
+
+
+            if (complaints.length === 0) {
+
+
+                box.innerHTML = `
+
+                    <div class="item">
+
+                        No complaints available.
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+
+            box.innerHTML = complaints.slice().reverse().map(c => `
+
+
+                <div class="complaint-card">
+
+
+                    <h3>
+
+                        Complaint #${c.id}
+
+                    </h3>
+
+
+                    <p>
+
+                        <b>Student:</b>
+
+                        ${escapeHTML(c.student)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Branch:</b>
+
+                        ${escapeHTML(c.branch)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Year:</b>
+
+                        ${escapeHTML(c.year)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Recipient:</b>
+
+                        ${escapeHTML(c.recipient)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Location:</b>
+
+                        ${escapeHTML(c.location)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Problem:</b>
+
+                        ${escapeHTML(c.problem)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Details:</b>
+
+                        ${escapeHTML(c.details)}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>Date:</b>
+
+                        ${escapeHTML(c.date)}
+
+                    </p>
+
+
+                    <p>
+
+
+                        <b>Status:</b>
+
+
+                        <span class="badge">
+
+                            ${escapeHTML(c.status)}
+
+                        </span>
+
+
+                    </p>
+
+
+
+                    <select
+
+                        onchange="updateComplaintStatus(
+
+                            ${c.id},
+
+                            this.value
+
+                        )"
+
+                    >
+
+
+                        <option
+
+                            ${c.status === "Pending" ? "selected" : ""}
+
+                        >
+
+                            Pending
+
+                        </option>
+
+
+                        <option
+
+                            ${c.status === "In Progress" ? "selected" : ""}
+
+                        >
+
+                            In Progress
+
+                        </option>
+
+
+                        <option
+
+                            ${c.status === "Resolved" ? "selected" : ""}
+
+                        >
+
+                            Resolved
+
+                        </option>
+
+
+                        <option
+
+                            ${c.status === "Rejected" ? "selected" : ""}
+
+                        >
+
+                            Rejected
+
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+            `).join("");
+
+        }
+
+
+
+        // UPDATE COMPLAINT STATUS
+
+        function updateComplaintStatus(id, status) {
+
+
+            let complaint = complaints.find(c =>
+
+                c.id === id
+
+            );
+
+
+
+            if (!complaint) {
+
+                return;
+
+            }
+
+
+
+            complaint.status = status;
+
+
+
+            localStorage.setItem(
+
+                "complaints",
+
+                JSON.stringify(complaints)
+
+            );
+
+
+
+            loadPrincipal();
+
+        }
+
+
+
+        // LOGOUT
+
+        function logout() {
+
+
+            currentUser = "";
+
+            currentRole = "";
+
+            currentBranch = "";
+
+            currentSubject = "";
+
+            currentYear = "";
+
+
+
+            document.body.classList.remove(
+
+                "dashboard-mode"
+
+            );
+
+
+
+            document.getElementById("dashboard")
+
+                .classList.add("hidden");
+
+
+
+            document.getElementById("loginPage")
+
+                .classList.remove("hidden");
+
+
+
+            document.getElementById("name").value = "";
+
+
+            document.getElementById("branch").value = "";
+
+
+            document.getElementById("subject").value = "";
+
+
+
+            document.getElementById("loginMessage")
+
+                .textContent = "";
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
